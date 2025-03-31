@@ -22,6 +22,10 @@ Demo: https://lead-tracker-laturkaraishvar.replit.app/
 - **API**: RESTful JSON API with proper error handling
 - **File Handling**: Python-multipart for file uploads
 
+## Tools
+- Cursor
+- Replit
+
 ## Setup Instructions
 
 ### Prerequisites
@@ -64,6 +68,13 @@ cd ..
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
+## Default Credentials
+
+The system is pre-configured with an attorney account for testing:
+
+- **Email**: attorney@leadtracker.com
+- **Password**: attorney@leadtracker
+  
 ## Routes and Access
 
 - **Public Form**: http://localhost:5000/
@@ -109,10 +120,4 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 └── vercel_database.py     # Database configuration for Vercel deployment
 ```
 
-## Default Credentials
-
-The system is pre-configured with an attorney account for testing:
-
-- **Email**: attorney@leadtracker.com
-- **Password**: attorney@leadtracker
 
