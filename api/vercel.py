@@ -22,8 +22,13 @@ app.add_middleware(
 )
 
 # Include all routes from the main app
-app.include_router(main_app.router)
+for route in main_app.routes:
+    app.routes.append(route)
+
+# Copy middleware and exception handlers
+app.middleware = main_app.middleware
+app.exception_handlers = main_app.exception_handlers
 
 # Create a handler for Vercel serverless functions
-def handler(request, context):
-    return app
+def handler(request):
+    return app(request.scope, request.receive, request.send)
