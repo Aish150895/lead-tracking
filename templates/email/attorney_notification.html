@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Lead Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #305680;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .info-table th {
+            background-color: #eee;
+            text-align: left;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .info-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .action-button {
+            display: inline-block;
+            background-color: #305680;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>New Lead Submission</h1>
+    </div>
+    <div class="content">
+        <p>A new lead has been submitted to the Lead Management System.</p>
+        
+        <h2>Lead Details:</h2>
+        <table class="info-table">
+            <tr>
+                <th>ID</th>
+                <td>{{ lead.id }}</td>
+            </tr>
+            <tr>
+                <th>Full Name</th>
+                <td>{{ lead.first_name }} {{ lead.last_name }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ lead.email }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ lead.state }}</td>
+            </tr>
+            <tr>
+                <th>Submission Date</th>
+                <td>{{ lead.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            </tr>
+        </table>
+        
+        <p>The lead's resume is attached to this email for your review.</p>
+        
+        <p>Please log in to the Lead Management System to update the lead's status and add any notes:</p>
+        
+        <a href="https://{{ domain }}/dashboard" class="action-button">View in Dashboard</a>
+        
+        <p>If you have any questions or need assistance, please contact the system administrator.</p>
+    </div>
+    <div class="footer">
+        <p>This is an automated notification from the Lead Management System.</p>
+        <p>&copy; 2025 Lead Management System. All rights reserved.</p>
+    </div>
+</body>
+</html>
