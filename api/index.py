@@ -1,13 +1,15 @@
-from fastapi import FastAPI, Depends, Request
-from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
+# api/index.py
 import sys
 import os
 
 # Add the parent directory to the path so we can import from main.py
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Import your main FastAPI app 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
+
+# Import your main FastAPI app and configuration
 from main import app as main_app
 from config import settings
 
@@ -31,7 +33,7 @@ app.add_middleware(
 for route in main_app.routes:
     app.routes.append(route)
 
-# Middleware and exception handlers from main app
+# Copy over middleware and exception handlers
 app.middleware = main_app.middleware
 app.exception_handlers = main_app.exception_handlers
 
@@ -39,10 +41,9 @@ app.exception_handlers = main_app.exception_handlers
 @app.get("/__health")
 async def health_check():
     return {
-        "status": "ok", 
+        "status": "ok",
         "database": settings.DATABASE_URL.split("@")[-1].split("/")[-1] if "@" in settings.DATABASE_URL else "sqlite"
     }
 
-# Handler function for Vercel serverless environment
-def handler(request):
-    return app(request.scope, request.receive, request.send)
+# Create a handler for Vercel using Mangum
+handler = Mangum(app)
