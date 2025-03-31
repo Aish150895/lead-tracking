@@ -26,12 +26,12 @@ A FastAPI-based lead management system with public submission form, email notifi
 ### Prerequisites
 
 - Python 3.9 or higher
-- PostgreSQL database (or SQLite for development)
+- SQLite for development
 - Node.js (for the React frontend)
 
 ### Environment Variables
 
-Create a `.env` file with the env.sample file as a template.
+Create a `.env` file with the env.example file as a template.
 
 ### Installation
 
