@@ -1,0 +1,77 @@
+/* Base Bootstrap theme override */
+
+/* Override Bootstrap's default dark theme */
+body {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+/* Make links not underlined by default */
+a {
+  text-decoration: none;
+}
+
+/* Custom styles for the lead management system */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border-radius: 0.5rem;
+}
+
+.card-header {
+  border-top-left-radius: 0.5rem !important;
+  border-top-right-radius: 0.5rem !important;
+}
+
+/* Button hover effects */
+.btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table hover styles */
+.table-hover tbody tr:hover {
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  background-color: rgba(33, 37, 41, 0.5);
+}
+
+/* Badge styles */
+.badge {
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+}
+
+/* Form control focus effect */
+.form-control:focus,
+.form-select:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Pagination active items */
+.page-item.active .page-link {
+  box-shadow: 0 2px 4px rgba(13, 110, 253, 0.25);
+}
+
+/* Add spacing to table cells for better readability */
+.table td, .table th {
+  padding: 0.75rem;
+  vertical-align: middle;
+}
+
+/* Make sure buttons in tables don't get too large */
+.table .btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.76562rem;
+}
