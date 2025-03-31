@@ -5,22 +5,34 @@
   "outputDirectory": "frontend/dist",
   "builds": [
     {
-      "src": "api/vercel.py",
+      "src": "api/index.py",
       "use": "@vercel/python",
       "config": {
         "runtime": "python3.11",
         "maxLambdaSize": "15mb",
-        "includedFiles": ["**/*.py", "**/*.html", "templates/**/*", "uploads/**/*"]
+        "includedFiles": ["**/*.py", "**/*.html", "templates/**/*", "uploads/**/*", "static/**/*"]
       }
+    },
+    {
+      "src": "frontend/dist/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    { 
+      "src": "/docs", 
+      "dest": "/api/index.py" 
+    },
+    { 
+      "src": "/openapi.json", 
+      "dest": "/api/index.py" 
+    },
     {
       "src": "/api/(.*)",
       "dest": "/api/index.py"
     },
     {
-      "src": "/(assets|images|css|js)/(.*)",
+      "src": "/(assets|images|css|js|static)/(.*)",
       "dest": "/frontend/dist/$1/$2"
     },
     {
