@@ -1,0 +1,21 @@
+{
+    "name": "workspace",
+    "version": "1.0.0",
+    "description": "A FastAPI-based lead management system with public submission form, email notifications, and internal authenticated dashboard.",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "@vitejs/plugin-react": "^4.3.4",
+      "bootstrap": "^5.3.3",
+      "react": "^19.1.0",
+      "react-dom": "^19.1.0",
+      "react-router-dom": "^7.4.1",
+      "vite": "^6.2.3"
+    }
+  }
+  
