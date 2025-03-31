@@ -1,0 +1,207 @@
+# Lead Management System: Design Document
+
+## Table of Contents
+
+1. [System Overview](#system-overview)
+2. [Architecture](#architecture)
+3. [Backend Design](#backend-design)
+4. [Frontend Design](#frontend-design)
+5. [Database Design](#database-design)
+6. [Authentication and Authorization](#authentication-and-authorization)
+7. [Email Notification System](#email-notification-system)
+8. [Deployment Strategy](#deployment-strategy)
+9. [Design Decisions and Rationales](#design-decisions-and-rationales)
+10. [Future Improvements](#future-improvements)
+
+## System Overview
+
+The Lead Management System is a full-stack web application designed to streamline the process of capturing, tracking, and managing potential client leads. The system consists of two main components:
+
+1. **Public-facing Lead Submission Form**: Allows prospects to submit their information (name, email, resume) without requiring authentication.
+
+2. **Authenticated Attorney Dashboard**: Restricted area where attorneys can view, track, and update lead statuses.
+
+The application leverages modern web technologies to deliver a responsive, secure, and scalable solution.
+
+## Architecture
+
+### High-Level Architecture
+
+The system follows a client-server architecture with clear separation of concerns:
+
+```
+┌─────────────────┐            ┌─────────────────┐            ┌─────────────────┐
+│                 │            │                 │            │                 │
+│  React Frontend │◄─────────► │  FastAPI Backend│◄─────────► │ SQLite DB   │
+│                 │   HTTP     │                 │   ORM      │                 │
+└─────────────────┘            └─────────────────┘            └─────────────────┘
+                                       ▲
+                                       │
+                                       ▼
+                               ┌─────────────────┐
+                               │                 │
+                               │  Email Service  │
+                               │                 │
+                               └─────────────────┘
+```
+
+### Technology Stack
+
+- **Frontend**: React.js, Bootstrap, React Router
+- **Backend**: FastAPI (Python), SQLAlchemy
+- **Database**: SQLite (development), PostgreSQL (production)
+- **Authentication**: JWT (JSON Web Tokens)
+- **Email**: SMTP with templated emails
+
+## Backend Design
+### Key Design Principles
+
+1. **Dependency Injection**: Database sessions and authentication are handled via FastAPI's dependency injection system, allowing for better testability and maintainability.
+
+2. **Schema Validation**: All incoming data is validated using Pydantic schemas, ensuring data integrity.
+
+3. **Service Layer Pattern**: Business logic is encapsulated in service modules (e.g., email services) that can be mocked or swapped out.
+
+4. **Middleware**: Custom middleware handles exceptions and logging, providing better error reporting.
+
+### API Design
+
+The API follows RESTful principles with clearly defined endpoints:
+
+- `/api/auth/*` - Authentication endpoints
+- `/api/leads/*` - Lead management endpoints 
+
+All endpoints return consistent JSON responses with appropriate HTTP status codes.
+
+## Frontend Design
+
+The frontend is built with React, emphasizing:
+
+1. **Component-Based Architecture**: UI elements are built as reusable components
+2. **Centralized State Management**: Authentication state is maintained in a context
+3. **Responsive Design**: Bootstrap ensures the application works on various screen sizes
+4. **Form Validation**: Client-side validation complements server-side validation
+
+## Database Design
+
+### Entity Relationship Model
+
+```
+┌────────────────┐       ┌────────────────┐
+│     Users      │       │     Leads      │
+├────────────────┤       ├────────────────┤
+│ id             │       │ id             │
+│ email          │       │ first_name     │
+│ hashed_password│       │ last_name      │
+│ full_name      │       │ email          │
+│ role           │       │ resume_path    │
+│ is_attorney    │       │ state          │
+│ created_at     │       │ reached_out_by │
+│ updated_at     │◄──────┤ reached_out_at │
+└────────────────┘       │ created_at     │
+                         │ updated_at     │
+                         └────────────────┘
+```
+
+### Database Migration Strategy
+
+The system uses SQLAlchemy's ORM capabilities to define models and handle database operations. Schema migrations are managed through an automated update system (`update_db_schema.py`).
+
+## Authentication and Authorization
+
+### Authentication Flow
+
+1. Attorneys log in via username/password
+2. Server validates credentials and issues a JWT token
+3. Token is stored in localStorage (for API calls) and as a cookie (for server-rendered pages)
+4. Token contains user role information for authorization
+5. Protected routes verify token validity and user roles
+
+### Authorization Strategy
+
+1. Role-based access control (RBAC) with two main roles:
+   - USER: Basic role with minimal permissions
+   - ATTORNEY: Advanced role with lead management permissions
+
+2. Dependency functions (`get_current_attorney`, etc.) enforce role-based permissions at the API level
+
+## Email Notification System
+
+The email system follows a dual-mode architecture:
+
+1. **Development Mode**: Emails are logged rather than sent, allowing for easy testing without external dependencies
+
+2. **Production Mode**: Real emails are sent via configured SMTP server
+
+### Email Templates
+
+Emails use Jinja2 templates for consistent formatting and personalization.
+
+### Implementation
+
+The application uses dependency injection to determine which email implementation to use based on environment configuration (`DEBUG_EMAIL` setting).
+
+## Deployment Strategy
+
+### Multi-Environment Support
+
+The system is designed to work in various environments:
+
+1. **Development**: Local development with SQLite database
+2. **Production**: Deployed to Vercel with PostgreSQL database
+
+
+## Design Decisions and Rationales
+
+### 1. Project Structure: Services and Utils Pattern
+
+**Decision**: Organize code into services/ and utils/ directories.
+
+**Rationale**:
+- Better separation of concerns
+- Improved testability by isolating business logic
+- More maintainable codebase as it scales
+- Easier discovery of functionality
+
+### 2. JWT for Authentication
+
+**Decision**: Use JWT tokens for authentication instead of session-based auth.
+
+**Rationale**:
+- Stateless authentication works well with serverless architecture
+- Reduced database load (no session storage required)
+- Better support for React frontend
+- Ability to embed role information directly in the token
+
+### 3. Dual-Mode Email System
+
+**Decision**: Create separate implementations for development and production email handling.
+
+**Rationale**:
+- Simplifies development without needing real SMTP servers
+- Provides identical interfaces making it easier to switch environments
+- Reduces risk of accidentally sending emails in development
+
+
+### 4. Role-Based Access Controls
+
+**Decision**: Implement role-based access with custom authentication dependencies.
+
+**Rationale**:
+- Secure by default approach
+- Clear and enforceable permission boundaries
+- Separation of public and attorney interfaces
+
+## Future Improvements
+
+1. **Enhanced Lead Filtering and Sorting**: Add more sophisticated options for managing large numbers of leads
+
+2. **Activity Logging**: Track all interactions with leads for better auditing
+
+3. **Two-Factor Authentication**: Add additional security layer for attorney accounts
+
+4. **Automated Testing Suite**: Implement comprehensive unit and integration tests
+
+5. **Performance Monitoring**: Add instrumentation to track application performance
+
+6. **Lead Analytics**: Introduce analytics dashboard for lead conversion metrics
