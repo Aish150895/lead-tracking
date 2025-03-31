@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "installCommand": "npm install",
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist",
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.11",
+        "maxLambdaSize": "15mb",
+        "includedFiles": ["**/*.py", "**/*.html", "templates/**/*", "uploads/**/*"]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/(assets|images|css|js)/(.*)",
+      "dest": "/frontend/dist/$1/$2"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/frontend/dist/favicon.ico"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/dist/index.html"
+    }
+  ]
+}
