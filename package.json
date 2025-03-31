@@ -4,7 +4,9 @@
     "description": "A FastAPI-based lead management system with public submission form, email notifications, and internal authenticated dashboard.",
     "main": "index.js",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "build": "cd frontend && npm install && npm run build",
+      "vercel-build": "cd frontend && npm install && npm run build"
     },
     "keywords": [],
     "author": "",
