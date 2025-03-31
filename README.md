@@ -1,7 +1,10 @@
 # Lead Management System
 
 A FastAPI-based lead management system with public submission form, email notifications, and internal authenticated dashboard.
-Demo: https://lead-tracker-laturkaraishvar.replit.app/
+
+-Demo: https://lead-tracker-laturkaraishvar.replit.app/
+- Quick note: The demo sends email in a sandbox env hence the email will not be delivered in inbox. Please reach out to me so I can show proof of email delivery.
+
 
 ## Features
 
