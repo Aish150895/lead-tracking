@@ -5,7 +5,7 @@
   "outputDirectory": "frontend/dist",
   "builds": [
     {
-      "src": "api/index.py",
+      "src": "api/vercel.py",
       "use": "@vercel/python",
       "config": {
         "runtime": "python3.11",
